@@ -41,7 +41,7 @@
                             <input type="checkbox" class="form-check-input" id="exampleCheck1" wire:model="remember">
                             <label class="form-check-label" for="exampleCheck1">Remember me</label>
                         </div>
-                        <a href="">Forgot Password</a>
+                        <a href="{{ route('admin.password.request') }}">Forgot Password</a>
                     </div>
                     <button type="submit" class="btn btn-primary py-3 w-100 mb-4">
                         <span wire:loading.remove wire:target="login">Sign In</span>

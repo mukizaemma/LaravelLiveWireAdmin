@@ -22,8 +22,11 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('templates/admin/css/bootstrap.min.css') }}" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
+    <!-- Template Stylesheet (uses hospital brand colors via CSS variables) -->
     <link href="{{ asset('templates/admin/css/style.css') }}" rel="stylesheet">
+
+    <!-- Summernote WYSIWYG for long text fields -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" rel="stylesheet">
     
     @livewireStyles
     @stack('styles')
@@ -58,38 +61,50 @@
                     <a href="{{ route('admin.dashboard') }}" class="nav-item nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <i class="fa fa-tachometer-alt me-2"></i>Dashboard
                     </a>
-                    <a href="{{ route('admin.reservations.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}">
-                        <i class="fa fa-calendar-check me-2"></i>Reservations
+
+                    {{-- Hospital content --}}
+                    <a href="{{ route('admin.settings.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                        <i class="fa fa-hospital me-2"></i>Hospital Info
                     </a>
-                    <a href="{{ route('admin.rooms.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.rooms.*') ? 'active' : '' }}">
-                        <i class="fa fa-bed me-2"></i>Rooms
+                    <a href="{{ route('admin.departments.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.departments.*') ? 'active' : '' }}">
+                        <i class="fa fa-sitemap me-2"></i>Departments
                     </a>
-                    <a href="{{ route('admin.facilities.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.facilities.*') ? 'active' : '' }}">
-                        <i class="fa fa-building me-2"></i>Facilities
+                    <a href="{{ route('admin.services.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
+                        <i class="fa fa-stethoscope me-2"></i>Services
                     </a>
-                    <a href="{{ route('admin.attractions.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.attractions.*') ? 'active' : '' }}">
-                        <i class="fa fa-map-marker-alt me-2"></i>Attractions
+                    <a href="{{ route('admin.doctors.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.doctors.*') ? 'active' : '' }}">
+                        <i class="fa fa-user-md me-2"></i>Doctors
                     </a>
-                    <a href="{{ route('admin.amenities.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.amenities.*') ? 'active' : '' }}">
-                        <i class="fa fa-star me-2"></i>Amenities
+                    <a href="{{ route('admin.leadership-team.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.leadership-team.*') ? 'active' : '' }}">
+                        <i class="fa fa-users me-2"></i>Leadership Team
                     </a>
-                    <a href="{{ route('admin.blogs.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}">
-                        <i class="fa fa-blog me-2"></i>Blogs
+                    <a href="{{ route('admin.partners.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.partners.*') ? 'active' : '' }}">
+                        <i class="fa fa-handshake me-2"></i>Partners
+                    </a>
+                    <a href="{{ route('admin.feedback.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.feedback.*') ? 'active' : '' }}">
+                        <i class="fa fa-comments me-2"></i>Feedback
+                    </a>
+                    <a href="{{ route('admin.contact-messages.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.contact-messages.*') ? 'active' : '' }}">
+                        <i class="fa fa-envelope me-2"></i>Contact Messages
+                    </a>
+
+                    {{-- Media --}}
+                    <a href="{{ route('admin.sliders.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}">
+                        <i class="fa fa-sliders-h me-2"></i>Home Slides
                     </a>
                     <a href="{{ route('admin.gallery.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
                         <i class="fa fa-images me-2"></i>Gallery
                     </a>
-                    <a href="{{ route('admin.slide-images.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.slide-images.*') ? 'active' : '' }}">
-                        <i class="fa fa-sliders-h me-2"></i>Slide Images
-                    </a>
-                    <a href="{{ route('admin.settings.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
-                        <i class="fa fa-cog me-2"></i>Settings
-                    </a>
-                    @if(Auth::user()->role === 'super_admin')
+
+                    {{-- People --}}
                     <a href="{{ route('admin.users.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                        <i class="fa fa-users me-2"></i>Users
+                        <i class="fa fa-user-md me-2"></i>
+                        @if(Auth::user()->role === 'super_admin')
+                            Users
+                        @else
+                            Staff
+                        @endif
                     </a>
-                    @endif
                 </div>
             </nav>
         </div>
@@ -144,7 +159,12 @@
                     </div>
                 @endif
 
-                @yield('content')
+                {{-- Support both classic Blade (@section("content")) and Livewire 3 layouts ($slot) --}}
+                @if (!empty(trim($__env->yieldContent('content'))))
+                    @yield('content')
+                @elseif (isset($slot))
+                    {{ $slot }}
+                @endif
             </div>
             <!-- Content Area End -->
 
@@ -176,8 +196,44 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('templates/admin/js/main.js') }}"></script>
-    
+
+    <!-- Summernote JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js"></script>
+
     @livewireScripts
     @stack('scripts')
+
+    <script>
+        document.addEventListener('livewire:load', function () {
+            const initSummernote = () => {
+                document.querySelectorAll('textarea.summernote').forEach((el) => {
+                    if (el.classList.contains('is-summernote-init')) return;
+
+                    $(el).summernote({
+                        height: 220,
+                        toolbar: [
+                            ['style', ['bold', 'italic', 'underline', 'clear']],
+                            ['para', ['ul', 'ol', 'paragraph']],
+                            ['insert', ['link']],
+                            ['view', ['codeview']]
+                        ],
+                        callbacks: {
+                            onChange: function(contents) {
+                                el.value = contents;
+                                el.dispatchEvent(new Event('input'));
+                            }
+                        }
+                    });
+
+                    el.classList.add('is-summernote-init');
+                });
+            };
+
+            initSummernote();
+            if (window.Livewire) {
+                Livewire.hook('message.processed', () => initSummernote());
+            }
+        });
+    </script>
 </body>
 </html>
