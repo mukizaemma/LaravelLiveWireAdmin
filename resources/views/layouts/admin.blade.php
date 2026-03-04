@@ -62,38 +62,9 @@
                         <i class="fa fa-tachometer-alt me-2"></i>Dashboard
                     </a>
 
-                    {{-- Hospital content --}}
+                    {{-- Hospital settings (website + headers) --}}
                     <a href="{{ route('admin.settings.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
-                        <i class="fa fa-hospital me-2"></i>Hospital Info
-                    </a>
-                    <a href="{{ route('admin.departments.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.departments.*') ? 'active' : '' }}">
-                        <i class="fa fa-sitemap me-2"></i>Departments
-                    </a>
-                    <a href="{{ route('admin.services.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
-                        <i class="fa fa-stethoscope me-2"></i>Services
-                    </a>
-                    <a href="{{ route('admin.doctors.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.doctors.*') ? 'active' : '' }}">
-                        <i class="fa fa-user-md me-2"></i>Doctors
-                    </a>
-                    <a href="{{ route('admin.leadership-team.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.leadership-team.*') ? 'active' : '' }}">
-                        <i class="fa fa-users me-2"></i>Leadership Team
-                    </a>
-                    <a href="{{ route('admin.partners.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.partners.*') ? 'active' : '' }}">
-                        <i class="fa fa-handshake me-2"></i>Partners
-                    </a>
-                    <a href="{{ route('admin.feedback.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.feedback.*') ? 'active' : '' }}">
-                        <i class="fa fa-comments me-2"></i>Feedback
-                    </a>
-                    <a href="{{ route('admin.contact-messages.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.contact-messages.*') ? 'active' : '' }}">
-                        <i class="fa fa-envelope me-2"></i>Contact Messages
-                    </a>
-
-                    {{-- Media --}}
-                    <a href="{{ route('admin.sliders.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}">
-                        <i class="fa fa-sliders-h me-2"></i>Home Slides
-                    </a>
-                    <a href="{{ route('admin.gallery.index') }}" class="nav-item nav-link {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
-                        <i class="fa fa-images me-2"></i>Gallery
+                        <i class="fa fa-hospital me-2"></i>Settings
                     </a>
 
                     {{-- People --}}

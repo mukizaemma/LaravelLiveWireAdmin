@@ -23,10 +23,10 @@ return new class extends Migration
 
             $table->string('email')->nullable();
             $table->string('phone_reception')->nullable();
-            $table->string('phone_urgency')->nullable();
+            $table->string('phone_manager')->nullable();
             $table->string('phone_whatsapp')->nullable();
-            $table->string('phone_billing')->nullable();
-            $table->string('phone_restaurant')->nullable();
+            $table->string('phone_director')->nullable();
+            $table->string('phone_parking')->nullable();
 
             $table->string('address')->nullable();
 

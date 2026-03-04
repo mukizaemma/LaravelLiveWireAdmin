@@ -36,16 +36,6 @@
                     <i class="fa fa-hospital me-2"></i>Hospital Info
                 </button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button
-                    class="nav-link {{ $activeTab === 'headers' ? 'active' : '' }}"
-                    wire:click="setTab('headers')"
-                    type="button"
-                    role="tab"
-                >
-                    <i class="fa fa-image me-2"></i>Page Headers
-                </button>
-            </li>
         </ul>
 
         <!-- Tab Content -->
@@ -589,94 +579,6 @@
                 </div>
             </div>
 
-            <!-- Page Headers Tab -->
-            <div class="tab-pane fade {{ $activeTab === 'headers' ? 'show active' : '' }}" role="tabpanel">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <h5 class="card-title mb-0">
-                                <i class="fa fa-image me-2 text-primary"></i>Page Headers
-                            </h5>
-                            <button
-                                type="button"
-                                class="btn btn-sm btn-primary"
-                                wire:click="saveHeaders"
-                            >
-                                <i class="fa fa-save me-1"></i>Save All
-                            </button>
-                        </div>
-
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>Page</th>
-                                        <th>Title</th>
-                                        <th>Caption</th>
-                                        <th>Header Image Path</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($headers as $index => $header)
-                                        <tr>
-                                            <td>
-                                                <span class="fw-semibold">{{ $header['label'] }}</span>
-                                                <br>
-                                                <small class="text-muted">{{ $header['page_key'] }}</small>
-                                            </td>
-                                            <td>
-                                                <input
-                                                    type="text"
-                                                    class="form-control form-control-sm"
-                                                    wire:model.defer="headers.{{ $index }}.title"
-                                                >
-                                            </td>
-                                            <td>
-                                                <textarea
-                                                    class="form-control form-control-sm summernote"
-                                                    rows="2"
-                                                    wire:model.defer="headers.{{ $index }}.caption"
-                                                ></textarea>
-                                            </td>
-                                            <td>
-                                                <div class="mb-1">
-                                                    <input
-                                                        type="file"
-                                                        class="form-control form-control-sm @error('headerImages.' . $index) is-invalid @enderror"
-                                                        wire:model="headerImages.{{ $index }}"
-                                                        accept="image/*"
-                                                    >
-                                                    @error('headerImages.' . $index)
-                                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-
-                                                @if(isset($headerImages[$index]) && $headerImages[$index])
-                                                    <div class="mt-1">
-                                                        <span class="text-muted small d-block mb-1">Preview (new upload):</span>
-                                                        <img src="{{ $headerImages[$index]->temporaryUrl() }}" alt="Header preview" class="img-fluid rounded border" style="max-height: 80px;">
-                                                    </div>
-                                                @elseif(!empty($header['image_path']))
-                                                    <div class="mt-1">
-                                                        <span class="text-muted small d-block mb-1">Current image:</span>
-                                                        <img src="{{ asset($header['image_path']) }}" alt="Header image" class="img-fluid rounded border" style="max-height: 80px;">
-                                                    </div>
-                                                @else
-                                                    <small class="text-muted">No header image set yet.</small>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <p class="text-muted small mb-0">
-                            Later you can replace the image path fields with real file uploads using the same structure.
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

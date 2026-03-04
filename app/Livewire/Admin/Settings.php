@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\PageHeader;
 use App\Models\WebsiteSetting;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -68,47 +67,25 @@ class Settings extends Component
     public $home_background_image;
     public $cta_background_image;
 
-    /**
-     * Temporary uploaded header images indexed by headers array key.
-     *
-     * @var array<int, mixed>
-     */
-    public array $headerImages = [];
-
-    // Page headers tab
-    /**
-     * @var array<int, array<string, mixed>>
-     */
-    public array $headers = [];
-
-    protected array $headerPages = [
-        ['key' => 'home', 'label' => 'Home'],
-        ['key' => 'about', 'label' => 'About Us'],
-        ['key' => 'departments', 'label' => 'Departments'],
-        ['key' => 'leadership', 'label' => 'Leadership Team'],
-        ['key' => 'services', 'label' => 'Services'],
-        ['key' => 'partners', 'label' => 'Partners'],
-        ['key' => 'gallery', 'label' => 'Gallery'],
-        ['key' => 'contact', 'label' => 'Contact'],
-        ['key' => 'feedback', 'label' => 'Feedback'],
-    ];
+    // Page headers functionality has been disabled for now
+    // to avoid requiring the page_headers table while the
+    // new public site is being built.
 
     public function mount()
     {
-        // Validate tab parameter
-        $validTabs = ['account', 'contacts', 'info', 'headers'];
+        // Validate tab parameter (only account/contacts/info for now)
+        $validTabs = ['account', 'contacts', 'info'];
         if (!in_array($this->activeTab, $validTabs)) {
             $this->activeTab = 'account';
         }
 
         $this->loadAccount();
         $this->loadWebsiteSettings();
-        $this->loadHeaders();
     }
 
     public function setTab(string $tab): void
     {
-        $validTabs = ['account', 'contacts', 'info', 'headers'];
+        $validTabs = ['account', 'contacts', 'info'];
         if (in_array($tab, $validTabs)) {
             $this->activeTab = $tab;
         }
@@ -174,32 +151,6 @@ class Settings extends Component
         $this->cta_title = $settings->cta_title;
         $this->cta_description = $settings->cta_description;
         $this->gallery_external_url = $settings->gallery_external_url;
-    }
-
-    protected function loadHeaders(): void
-    {
-        $this->headers = [];
-        $this->headerImages = [];
-
-        foreach ($this->headerPages as $page) {
-            $model = PageHeader::firstOrCreate(
-                ['page_key' => $page['key']],
-                [
-                    'title' => $page['label'],
-                    'caption' => null,
-                    'image_path' => null,
-                ]
-            );
-
-            $this->headers[] = [
-                'id' => $model->id,
-                'page_key' => $model->page_key,
-                'label' => $page['label'],
-                'title' => $model->title,
-                'caption' => $model->caption,
-                'image_path' => $model->image_path,
-            ];
-        }
     }
 
     public function saveAccount(): void
@@ -330,46 +281,6 @@ class Settings extends Component
         $this->cta_background_image = null;
 
         session()->flash('success', 'Hospital information updated successfully.');
-    }
-
-    public function saveHeaders(): void
-    {
-        $this->validate([
-            'headers.*.title' => ['nullable', 'string'],
-            'headers.*.caption' => ['nullable', 'string'],
-            'headerImages.*' => ['nullable', 'image', 'max:4096'],
-        ]);
-
-        foreach ($this->headers as $index => $header) {
-            if (empty($header['id'])) {
-                continue;
-            }
-
-            $model = PageHeader::find($header['id']);
-            if (!$model) {
-                continue;
-            }
-
-            $model->title = $header['title'] ?? null;
-            $model->caption = $header['caption'] ?? null;
-
-            // If a new image was uploaded for this header, store it and use its path.
-            if (isset($this->headerImages[$index]) && $this->headerImages[$index]) {
-                $path = $this->headerImages[$index]->store('headers', 'public');
-                $model->image_path = 'storage/' . $path;
-                $this->headers[$index]['image_path'] = $model->image_path;
-            } else {
-                // Fallback: keep existing value or any manually edited path.
-                $model->image_path = $header['image_path'] ?? $model->image_path;
-            }
-
-            $model->save();
-        }
-
-        // Reset temporary uploads after saving
-        $this->headerImages = [];
-
-        session()->flash('success', 'Page headers updated successfully.');
     }
 
     public function addAboutValueCard(): void

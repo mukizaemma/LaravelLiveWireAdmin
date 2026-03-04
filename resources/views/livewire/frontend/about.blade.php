@@ -1,5 +1,5 @@
 <div>
-<x-page-locator title="About us" :header="$header" />
+<x-page-locator title="About us" />
 <div class="content">
     <div class="about-page">
         @if($settings)
@@ -93,20 +93,6 @@
                 </div>
             @endif
         @endif
-        @if($partners->isNotEmpty())
-            <div class="partners-section">
-                <h2 class="section-heading" style="text-align:center">Our partners</h2>
-                <div class="partners-grid">
-                    @foreach($partners as $partner)
-                        <div class="partner-item">
-                            @if($partner->logo_path)
-                                <img src="{{ asset($partner->logo_path) }}" alt="{{ $partner->name ?? 'Partner' }}">
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
     </div>
 </div>
 <style>
@@ -139,9 +125,5 @@
 .values-list { list-style: none; padding-left: 0; margin: 0; }
 .values-list li { position: relative; padding-left: 28px; margin-bottom: 12px; font-size: 1rem; }
 .values-list li::before { content: ''; position: absolute; left: 0; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--primary); }
-.partners-section { margin-top: 56px; }
-.partners-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 20px; place-items: center; }
-.partner-item { padding: 16px; background: #f9f9f9; border-radius: 8px; }
-.partner-item img { max-width: 100%; max-height: 60px; object-fit: contain; }
 </style>
 </div>

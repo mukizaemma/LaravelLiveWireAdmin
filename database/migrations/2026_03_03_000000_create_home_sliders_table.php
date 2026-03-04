@@ -14,13 +14,19 @@ return new class extends Migration
         Schema::create('home_sliders', function (Blueprint $table) {
             $table->id();
 
+            // Image for the slide
             $table->string('image_path');
+
+            // Optional caption text shown over/under the image
+            $table->text('caption')->nullable();
+
+            // Status flag to enable/disable the slide
+            $table->boolean('is_active')->default(true);
+
+            // Optional display ordering and metadata used by existing code
             $table->string('title')->nullable();
-            $table->longText('caption')->nullable();
             $table->string('button_text')->nullable();
             $table->string('button_url')->nullable();
-
-            $table->boolean('is_active')->default(true);
             $table->unsignedInteger('sort_order')->nullable();
 
             $table->timestamps();

@@ -87,98 +87,8 @@
         </div>
     @endif
 
-    {{-- Departments carousel (3 per slide) --}}
-    @if($departments->isNotEmpty())
-        @php $deptChunks = $departments->chunk(3); @endphp
-        <div class="departments-section"
-             x-data="{ current: 0, total: {{ $deptChunks->count() }} }">
-            <h2 class="section-heading">Read our Departments</h2>
-            <p class="section-sub">We Provide Special Service For Patients</p>
-            <div class="carousel-wrap">
-                <div class="carousel-track">
-                    @foreach($deptChunks as $i => $chunk)
-                        <div class="carousel-slide" x-show="current === {{ $i }}" x-transition:enter="transition ease-out duration-300" x-transition:leave="transition ease-in duration-200">
-                            <div class="department-container">
-                                @foreach($chunk as $department)
-                                    <a href="{{ route('departments.show', ['department' => $department->slug ?: $department->id]) }}" class="department-container-item" wire:navigate>
-                                        <div class="cover">
-                                            @if($department->cover_image)
-                                                <img src="{{ asset($department->cover_image) }}" alt="{{ $department->name }}">
-                                            @else
-                                                <div class="cover-placeholder"></div>
-                                            @endif
-                                        </div>
-                                        <div class="item-content">
-                                            <h3>{{ $department->name }}</h3>
-                                        </div>
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                @if($deptChunks->count() > 1)
-                    <button type="button" class="carousel-btn carousel-btn--prev" @click="current = (current - 1 + total) % total" aria-label="Previous">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M15 18l-6-6 6-6"/></svg>
-                    </button>
-                    <button type="button" class="carousel-btn carousel-btn--next" @click="current = (current + 1) % total" aria-label="Next">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M9 18l6-6-6-6"/></svg>
-                    </button>
-                @endif
-            </div>
-            <div class="carousel-footer">
-                <a href="{{ route('departments.index') }}" class="btn-primary" wire:navigate>View more</a>
-            </div>
-        </div>
-    @endif
-
-    {{-- Leadership Team carousel (3 per slide) --}}
-    @if($leadership->isNotEmpty())
-        @php $teamChunks = $leadership->chunk(3); @endphp
-        <div class="team-section"
-             x-data="{ current: 0, total: {{ $teamChunks->count() }} }">
-            <h2 class="section-heading">Our Leadership Team</h2>
-            <p class="section-sub">Meet Our Amazing Leaders</p>
-            <div class="carousel-wrap">
-                <div class="carousel-track">
-                    @foreach($teamChunks as $i => $chunk)
-                        <div class="carousel-slide" x-show="current === {{ $i }}" x-transition:enter="transition ease-out duration-300" x-transition:leave="transition ease-in duration-200">
-                            <div class="team-container">
-                                @foreach($chunk as $member)
-                                    <a href="{{ route('leadership.show', ['member' => $member->id, 'slug' => \Illuminate\Support\Str::slug($member->full_name)]) }}" class="team-container-item" wire:navigate>
-                                        <div class="img">
-                                            @if($member->profile_image)
-                                                <img src="{{ asset($member->profile_image) }}" alt="{{ $member->full_name }}">
-                                            @else
-                                                <div class="img-placeholder"></div>
-                                            @endif
-                                        </div>
-                                        <div class="team-container-item-content">
-                                            <h4 class="name">{{ $member->full_name }}</h4>
-                                            @if($member->position)
-                                                <label class="title">{{ $member->position }}</label>
-                                            @endif
-                                        </div>
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                @if($teamChunks->count() > 1)
-                    <button type="button" class="carousel-btn carousel-btn--prev" @click="current = (current - 1 + total) % total" aria-label="Previous">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M15 18l-6-6 6-6"/></svg>
-                    </button>
-                    <button type="button" class="carousel-btn carousel-btn--next" @click="current = (current + 1) % total" aria-label="Next">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M9 18l6-6-6-6"/></svg>
-                    </button>
-                @endif
-            </div>
-            <div class="carousel-footer">
-                <a href="{{ route('leadership.index') }}" class="btn-primary" wire:navigate>View more</a>
-            </div>
-        </div>
-    @endif
+    {{-- Sections using departments and leadership have been temporarily removed
+         while we build the new public site. --}}
     </div>
 
     {{-- Emergency / Call to Action (parallax, full width, outside content) --}}
@@ -221,31 +131,12 @@
                                 </span>
                             </a>
                         @endif
-                        <a href="{{ route('appointment') }}" class="cta-parallax__btn" wire:navigate>Appointment</a>
+                        {{-- Button removed while only home route is exposed --}}
                     </div>
                 </div>
             </div>
         </div>
     @endif
-
-    <div class="content">
-    {{-- Partners --}}
-    @if($partners->isNotEmpty())
-        <div class="partners-section">
-            <h2 class="section-heading" style="text-align:center">Our partners</h2>
-            <p class="section-sub" style="text-align:center">Meet Our Amazing partners</p>
-            <div class="partners-grid">
-                @foreach($partners as $partner)
-                    <div class="partner-item">
-                        @if($partner->logo_path)
-                            <img src="{{ asset($partner->logo_path) }}" alt="{{ $partner->name ?? 'Partner' }}">
-                        @endif
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    @endif
-    </div>
 
     <style>
 /* Hero slider - full viewport, smooth transitions */
@@ -346,47 +237,6 @@
 .cover-img img { width: 100%; height: 100%; object-fit: cover; }
 .about-medic-description .heading { font-size: 1.4rem; font-weight: 500; margin-bottom: 12px; }
 .medic-description { font-size: 0.9rem; color: #555; line-height: 1.6; }
-.departments-section, .team-section { padding: 20px 0; }
-.carousel-wrap { position: relative; min-height: 300px; }
-.carousel-track { position: relative; min-height: 300px; }
-.carousel-slide { position: absolute; top: 0; left: 0; right: 0; width: 100%; }
-.carousel-slide:first-child { position: relative; }
-.carousel-btn {
-    position: absolute; top: 50%; transform: translateY(-50%);
-    width: 44px; height: 44px; border-radius: 50%;
-    background: rgba(255,255,255,0.9); color: var(--realblack); border: 1px solid #eee;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s, color 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-.carousel-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
-.carousel-btn--prev { left: -12px; }
-.carousel-btn--next { right: -12px; }
-@media (max-width: 768px) {
-    .carousel-btn { width: 36px; height: 36px; }
-    .carousel-btn--prev { left: 4px; }
-    .carousel-btn--next { right: 4px; }
-}
-.carousel-footer { text-align: center; margin-top: 24px; }
-.department-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-@media (max-width: 768px) { .department-container { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 540px) { .department-container { grid-template-columns: 1fr; } }
-.department-container-item { display: flex; flex-direction: column; box-shadow: 0 0 20px -2px rgba(0,0,0,0.1); border-radius: 4px; overflow: hidden; text-decoration: none; color: inherit; }
-.department-container-item:hover .cover img { transform: scale(1.05); }
-.department-container-item .cover { height: 240px; overflow: hidden; }
-.department-container-item .cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
-.cover-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #f5f5f5, #e0e0e0); }
-.department-container-item .item-content { padding: 16px; }
-.department-container-item .item-content h3 { font-size: 1rem; font-weight: 600; }
-.team-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-@media (max-width: 768px) { .team-container { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 540px) { .team-container { grid-template-columns: 1fr; } }
-.team-container-item { display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; color: inherit; box-shadow: 0 0 20px -2px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; padding-bottom: 16px; }
-.team-container-item:hover { color: var(--primary); }
-.team-container-item .img { width: 100%; aspect-ratio: 4/5; overflow: hidden; }
-.team-container-item .img img { width: 100%; height: 100%; object-fit: cover; }
-.img-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #f5f5f5, #e0e0e0); }
-.team-container-item-content .name { font-size: 1rem; font-weight: 600; margin: 8px 0 4px; }
-.team-container-item-content .department, .team-container-item-content .title { font-size: 0.8rem; color: #666; }
 /* CTA Parallax section - full viewport width (edge-to-edge, matches hero slider) */
 .cta-parallax--fullwidth {
     width: 100vw;
@@ -531,10 +381,6 @@
     .cta-parallax__contacts { flex-direction: column; gap: 16px; }
     .cta-parallax__contact { width: 100%; max-width: 320px; margin: 0 auto; }
 }
-.partners-section { margin: 40px 0; }
-.partners-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 20px; place-items: center; }
-.partner-item { padding: 16px; background: #f9f9f9; border-radius: 8px; }
-.partner-item img { max-width: 100%; max-height: 60px; object-fit: contain; }
 .text-center { text-align: center; }
 .mt-4 { margin-top: 24px; }
     </style>

@@ -93,17 +93,6 @@
             </a>
             <div class="navbar-links">
                 <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" wire:navigate>Home</a>
-                <a href="{{ route('departments.index') }}" class="nav-link {{ request()->routeIs('departments.*') ? 'active' : '' }}" wire:navigate>Departments</a>
-                <a href="{{ route('leadership.index') }}" class="nav-link {{ request()->routeIs('leadership.*') ? 'active' : '' }}" wire:navigate>Leadership Team</a>
-                @if($websiteSettings->gallery_external_url ?? null)
-                    <a href="{{ $websiteSettings->gallery_external_url }}" class="nav-link" target="_blank" rel="noopener noreferrer">Gallery</a>
-                @else
-                    <a href="{{ route('gallery.index') }}" class="nav-link {{ request()->routeIs('gallery.index') ? 'active' : '' }}" wire:navigate>Gallery</a>
-                @endif
-                <a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" wire:navigate>About us</a>
-                <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" wire:navigate>Contact us</a>
-                <a href="{{ route('appointment') }}" class="btn-appointment" wire:navigate>Appointment</a>
-                <a href="{{ route('feedback') }}" class="nav-link {{ request()->routeIs('feedback') ? 'active' : '' }}" wire:navigate>Feedback</a>
             </div>
         </nav>
 
@@ -181,23 +170,12 @@
                             </a>
                         @endif
                     </div>
-                    <a href="{{ route('appointment') }}" class="btn-appointment-footer" wire:navigate>Appointment</a>
                 </div>
                 <div class="footer-links-wrap">
                     <div class="footer-links">
                         <h3>Quick links</h3>
                         <a href="{{ route('home') }}" wire:navigate>Home</a>
-                        <a href="{{ route('about') }}" wire:navigate>About us</a>
-                        <a href="{{ route('departments.index') }}" wire:navigate>Departments</a>
-                        @if($websiteSettings->gallery_external_url ?? null)
-                            <a href="{{ $websiteSettings->gallery_external_url }}" target="_blank" rel="noopener noreferrer">Gallery</a>
-                        @else
-                            <a href="{{ route('gallery.index') }}" wire:navigate>Gallery</a>
-                        @endif
-                        <a href="{{ route('contact') }}" wire:navigate>Contact us</a>
-                        <a href="{{ route('feedback') }}" wire:navigate>Feedback</a>
                     </div>
-                    <a href="{{ route('feedback') }}" class="btn-suggestion" wire:navigate>Make a suggestion</a>
                 </div>
             </div>
             <div class="footer-bottom">
